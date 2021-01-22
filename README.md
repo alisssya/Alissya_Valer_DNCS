@@ -136,9 +136,9 @@ I divide the project into 2 parts: the first one is based on the setup on the st
 
 
 To assign IP addresses to the VMs I had to follow this requirements, that say:
-•	"Hosts-A" must be able to scale up to 506 usable addresses
-•	"Hosts-B" must be able to scale up to 95 usable addresses
-•	"Host-C/Hub" must be able to scale up to 25 usable addresses.
+- "Hosts-A" must be able to scale up to 506 usable addresses
+- "Hosts-B" must be able to scale up to 95 usable addresses
+- "Host-C/Hub" must be able to scale up to 25 usable addresses.
 The Netmasks are sized to be as small as possible respecting the specifications
 
 ## Developing
