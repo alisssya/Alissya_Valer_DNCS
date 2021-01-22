@@ -144,18 +144,20 @@ The Netmasks are sized to be as small as possible respecting the specifications
 ## Developing
 
 ### Developing Part #1
-Host-a: it needs to accommodate up to 506 devices, as subnet IP addresses we used 10.10.0.0/23; in this host we turned on the ethernet1 interface with IP address 10.10.0.1/23.
-Host-b: it needs to accommodate up to 95 devices, as subnet IP addresses we used 10.20.0.0/25; we turned on the ethernet1 interface with IP address 10.20.0.1/25.
-Switch: we tried to figure out how to build a VLAN that would allow host-a and host-b to be kept in separate subnets. we were then able to install the openvswitch package, and activate ethernet1, ethernet2 and ethernet3.
-Router-1: to develop the virtual LANs we decided to divide the router-1 ethernet1 into two separate visual ports (1.1 and 1.2, both connected to the ethernet1 switch port).
-the switch bridge was built to handle packets from host-a and host-b to router-1 and vice versa. In this way we made host-a and host-b communicate only via router. We gave to the two virtual ports IP addresses 10.10.0.2/23, 10.20.0.2/25 for ethernet1.1 and ethernet1.2. We gave the router the command 'sysctl net.ipv4.ip_forward=1' to enable the router to forward packages.
+- Host-a: it needs to accommodate up to 506 devices, as subnet IP addresses we used 10.10.0.0/23; in this host we turned on the ethernet1 interface with IP address 10.10.0.1/23.
+- Host-b: it needs to accommodate up to 95 devices, as subnet IP addresses we used 10.20.0.0/25; we turned on the ethernet1 interface with IP address 10.20.0.1/25.
+- Switch: we tried to figure out how to build a VLAN that would allow host-a and host-b to be kept in separate subnets. we were then able to install the openvswitch package, and activate ethernet1, ethernet2 and ethernet3.
+- Router-1: to develop the virtual LANs we decided to divide the router-1 ethernet1 into two separate visual ports (1.1 and 1.2, both connected to the ethernet1 switch port).
+
+- The switch bridge was built to handle packets from host-a and host-b to router-1 and vice versa. 
+In this way we made host-a and - host-b communicate only via router. We gave to the two virtual ports IP addresses 10.10.0.2/23, 10.20.0.2/25 for ethernet1.1 and ethernet1.2. We gave the router the command 'sysctl net.ipv4.ip_forward=1' to enable the router to forward packages.
 
 ### Testing Part #1
 To test the infrastructure we used the ping command: we used the ping 10.20.0.2 command from host a to verify that host a reached host b and vice versa, i.e. from host b to host a (10.10.0.2).
 
 ### Developing Part #2
-Host-c/Hub: since host-c must be able to host up to 25 addresses, we used 10.30.0.0/27 as the subnet mask, so that we have 30 address available.; then we turned on the ethernet1 link with IP address 10.30.0.1/27.
-Router-2: We created router-2 to connect host-c to router-1's subnet. We set ethernet1 to 10.30.0.2/27 (10.30.0.0 subnet) and ethernet2 to 10.20.0.2/25 (10.20.0.0 subnet, shared between router-1 and router-2). We activated ethernet2, port of the router-1,  on address 10.20.0.1/25 so as to connect the routers for subnets. We gave the router the command 'sysctl net.ipv4.ip_forward=1' to enable the router to forward packages.
+- Host-c/Hub: since host-c must be able to host up to 25 addresses, we used 10.30.0.0/27 as the subnet mask, so that we have 30 address available.; then we turned on the ethernet1 link with IP address 10.30.0.1/27.
+- Router-2: We created router-2 to connect host-c to router-1's subnet. We set ethernet1 to 10.30.0.2/27 (10.30.0.0 subnet) and ethernet2 to 10.20.0.2/25 (10.20.0.0 subnet, shared between router-1 and router-2). We activated ethernet2, port of the router-1,  on address 10.20.0.1/25 so as to connect the routers for subnets. We gave the router the command 'sysctl net.ipv4.ip_forward=1' to enable the router to forward packages.
 We set up the generic routes to connect router-2 nework to router-1 network.
 
 #### Doker 
@@ -168,14 +170,14 @@ We used ping commands to check all the routes; and "curl 10.30.0.1:80" to test t
 To run the infrastructure use: "vagrant up".
 Verify that all virtual machines are running correctly and are "running": “Vagrant status”
 
-Check if host-a can reach host-b: “vagrant ssh host-a -c "ping 10.20.0.2 -c 1"”
-Check if host-a can reach host-c: “vagrant ssh host-a -c "ping 10.30.0.2 -c 1"”
-Check if host-b can reach host-a: “vagrant ssh host-b -c "ping 10.10.0.2 -c 1"”
-Check if host-b can reach host-c: “vagrant ssh host-b -c "ping 10.30.0.2 -c 1"”
-Check if host-c can reach host-a: “vagrant ssh host-c -c "ping 10.10.0.2 -c 1"”
-Check if host-c can reach host-b: “vagrant ssh host-c -c "ping 10.20.0.2 -c 1"”
+- Check if host-a can reach host-b: “vagrant ssh host-a -c "ping 10.20.0.2 -c 1"”
+- Check if host-a can reach host-c: “vagrant ssh host-a -c "ping 10.30.0.2 -c 1"”
+- Check if host-b can reach host-a: “vagrant ssh host-b -c "ping 10.10.0.2 -c 1"”
+- Check if host-b can reach host-c: “vagrant ssh host-b -c "ping 10.30.0.2 -c 1"”
+- Check if host-c can reach host-a: “vagrant ssh host-c -c "ping 10.10.0.2 -c 1"”
+- Check if host-c can reach host-b: “vagrant ssh host-c -c "ping 10.20.0.2 -c 1"”
 
-Check if host-a can reach the webserver of host-c: “vagrant ssh host-a -c "curl 10.30.0.2 -c 1"”
-Check if host-b can reach the webserver of host-c: “vagrant ssh host-b -c "curl 10.30.0.2 -c 1"”
-Check if the host-c can reach the webserver of the host-c: “vagrant ssh host-c -c "curl 10.30.0.2 -c 1"”
+- Check if host-a can reach the webserver of host-c: “vagrant ssh host-a -c "curl 10.30.0.2 -c 1"”
+- Check if host-b can reach the webserver of host-c: “vagrant ssh host-b -c "curl 10.30.0.2 -c 1"”
+- Check if the host-c can reach the webserver of the host-c: “vagrant ssh host-c -c "curl 10.30.0.2 -c 1"”
 
