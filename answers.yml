@@ -1,0 +1,18 @@
+FirstName: Alissya
+LastName: Valer
+MatriculationNumber: 200593
+AcademicYear: 2020-2021
+GitHubUrl:
+Subnets:
+  HostsA:
+    RequiredAddresses: 506
+    SubnetAddress: 10.10.0.0
+    SubnetPrefixLength: 23
+  HostsB:
+    RequiredAddresses: 95
+    SubnetAddress: 10.20.0.0
+    SubnetPrefixLength: 25
+  Hub:
+    RequiredAddresses: 25
+    SubnetAddress: 10.30.0.0
+    SubnetPrefixLength: 27
